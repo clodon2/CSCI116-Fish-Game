@@ -56,6 +56,7 @@ class Game:
 
         # for game end
         GAMEFINISH = pg.USEREVENT + 2
+        FINISH_EVENT = pg.event.Event(GAMEFINISH)
 
         while running:
             for event in pg.event.get():
@@ -66,7 +67,6 @@ class Game:
                     self.spawnFish()
 
                 if event.type == GAMEFINISH: # game ends event
-                    print("out of time")
                     self.running = False
 
 
@@ -107,7 +107,7 @@ class Game:
                             otherFish.kill()
 
             if self.time > self.runTime:
-                pg.event.post(GAMEFINISH)
+                pg.event.post(FINISH_EVENT)
 
             # text stuff
             self.UISprites = []
