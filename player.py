@@ -3,7 +3,7 @@ import pygame
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1000
 
-class player():
+class Player():
   speed = 5
 
   def update(self, pressedKeys):
