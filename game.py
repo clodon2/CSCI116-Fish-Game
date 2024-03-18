@@ -23,10 +23,12 @@ class Game:
 
         self.player = Player()
         self.time = 0 # in seconds of game running
+        pg.font.init()
+        self.gameFont = pg.font.Font(pg.font.get_default_font(), size=30)
 
         self.fishList = pg.sprite.Group()
         self.gameSprites = pg.sprite.Group()
-        self.GUISprites = []
+        self.UISprites = []
 
     def getFishRects(self):
         """Get the rect object of all fish in the fish list and return as a list"""
@@ -48,15 +50,12 @@ class Game:
 
         self.gameSprites.add(self.player)
 
-        # put gui stuff in this list
-        self.GUISprites = []
-
         # for fish spawning
         ADDFISH = pg.USEREVENT + 1
         pg.time.set_timer(ADDFISH, 750)
 
         # for game end
-        GAMEFINISH = pg.USERVENT + 2
+        GAMEFINISH = pg.USEREVENT + 2
 
         while running:
             for event in pg.event.get():
@@ -110,11 +109,20 @@ class Game:
             if self.time > self.runTime:
                 pg.event.post(GAMEFINISH)
 
+            # text stuff
+            self.UISprites = []
+            timeText = (self.gameFont.render(f"{round(self.time)}", True, (255, 255, 255)),
+                        (20, 20))
+            self.UISprites.append(timeText)
+
             screen.fill("blue")
 
             # draw all entitites to the screen
             for entity in self.gameSprites:
                 screen.blit(entity.surf, entity.rect) # can change if needed
+
+            for text in self.UISprites:
+                screen.blit(text[0], text[1])
 
             pg.display.flip()
             clock.tick(60)
