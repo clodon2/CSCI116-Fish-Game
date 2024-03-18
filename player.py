@@ -14,6 +14,11 @@ class Player(pg.sprite.Sprite):
         self.surf = pg.surface.Surface(displaySize) # replace w/ scaled image
         self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect(center=location)
+  def getScore(self):
+    return self.score
+
+  def addScore(self, amount):
+    self.score += amount
 
   def update(self, pressedKeys):
     if keypress[K_UP]:
