@@ -14,7 +14,7 @@ from leaderboard import Leaderboard
 
 
 class Game:
-    def __init__(self, difficulty=1, runTime=120):
+    def __init__(self, difficulty=1, runTime=20):
         self.screenSize = (1000, 600)
         
         self.difficulty = difficulty
@@ -22,6 +22,7 @@ class Game:
         self.runTime = runTime
 
         self.player = Player()
+        self.time = 0 # in seconds of game running
 
         self.fishList = pg.sprite.Group()
         self.gameSprites = pg.sprite.Group()
@@ -54,13 +55,20 @@ class Game:
         ADDFISH = pg.USEREVENT + 1
         pg.time.set_timer(ADDFISH, 1000)
 
+        # for game end
+        GAMEFINISH = pg.USERVENT + 2
+
         while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
 
-                if event.type == ADDFISH:
+                if event.type == ADDFISH: # spawn fish event
                     self.spawnFish()
+
+                if event.type == GAMEFINISH: # game ends event
+                    print("out of time")
+                    self.running = False
 
 
             pressedKeys = pg.key.get_pressed()
@@ -76,12 +84,15 @@ class Game:
                 # fish-player collision, if player bigger eat fish
                 if self.player.getSize() >= fish.getSize():
                     self.player.addSize(fish.getSize())
-                    self.player.addScore(1)
+                    self.player.addScore(fish.getScore())
                     fish.kill()
                 # fish-player collision, if fish bigger "eat" player
                 else:
                     self.player.addScore(-5) # player "eaten" here
-                    fish.kill() # probs remove this
+
+                # kill fish if swim off screen
+                if fish.rect.right < 0:
+                    fish.kill()
             
             for fish in self.fishList:
                 # fish-fish collisions
@@ -96,6 +107,9 @@ class Game:
                             fish.addSize(otherFish.getSize())
                             otherFish.kill()
 
+            if self.time > self.runTime:
+                pg.event.post(GAMEFINISH)
+
             screen.fill("blue")
 
             # draw all entitites to the screen
@@ -104,11 +118,11 @@ class Game:
 
             pg.display.flip()
             clock.tick(60)
+            # update time
+            self.time += clock.get_time() / 1000
 
         pg.quit()
 
 
 myGame = Game()
 myGame.run()
-
-
