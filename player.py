@@ -4,7 +4,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1000
 
 class Player(pg.sprite.Sprite):
-  def __init__(self, location=(50, 300)):
+  def __init__(self, location=(500, 300)):
         super().__init__()
         self.speed = 10
         self.size = 1.2
