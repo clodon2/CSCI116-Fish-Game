@@ -53,7 +53,7 @@ class Game:
 
         # for fish spawning
         ADDFISH = pg.USEREVENT + 1
-        pg.time.set_timer(ADDFISH, 1000)
+        pg.time.set_timer(ADDFISH, 750)
 
         # for game end
         GAMEFINISH = pg.USERVENT + 2
