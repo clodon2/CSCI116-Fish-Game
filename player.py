@@ -1,6 +1,7 @@
 """
 Program: player.py
 Author: Landon Harney
+Date-Written: 3/17/2024
 Group: Austin Amash, Sam Cremeans, Corey Verkouteren, Landon Harney
 Description: This program creates a player for a fish game and allows for movement, score-keeping, and size and speed adjustments.
 Variables Used:
