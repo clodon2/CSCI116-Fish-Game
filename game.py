@@ -83,7 +83,7 @@ class Game:
                 # fish-player collision, if player bigger eat fish
                 if self.player.getSize() >= fish.getSize():
                     self.player.addSize(fish.getSize())
-                    self.player.addScore(fish.getScore())
+                    self.player.addScore(fish.getSize())
                     fish.kill()
                 # fish-player collision, if fish bigger "eat" player
                 else:
