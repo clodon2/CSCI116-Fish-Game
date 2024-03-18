@@ -1,9 +1,10 @@
 import pygame
 
 SCREEN_HEIGHT = 600
-SCREEN_WIDTH = 600
+SCREEN_WIDTH = 1000
 
 class player():
+  speed = 5
 
   def update(self, pressedKeys):
     if keypress[K_UP]:
