@@ -12,7 +12,7 @@ from fishtest import Fish
 
 
 class Game:
-    def __init__(self, difficulty=1, runTime=120):
+    def __init__(self, difficulty=1, runTime=20):
         self.screenSize = (1000, 600)
         
         self.difficulty = difficulty
@@ -20,11 +20,13 @@ class Game:
         self.runTime = runTime
 
         self.player = Player()
-        self.time = 0
+        self.time = 0 # in seconds of game running
+        pg.font.init()
+        self.gameFont = pg.font.Font(pg.font.get_default_font(), size=30)
 
         self.fishList = pg.sprite.Group()
         self.gameSprites = pg.sprite.Group()
-        self.GUISprites = []
+        self.UISprites = []
 
     def getFishRects(self):
         """Get the rect object of all fish in the fish list and return as a list"""
@@ -46,13 +48,11 @@ class Game:
 
         self.gameSprites.add(self.player)
 
-        # put gui stuff in this list
-        self.GUISprites = []
-
         # for fish spawning
         ADDFISH = pg.USEREVENT + 1
-        pg.time.set_timer(ADDFISH, 1000)
+        pg.time.set_timer(ADDFISH, 750)
 
+        # for game end
         GAMEFINISH = pg.USEREVENT + 2
 
         while running:
@@ -60,12 +60,12 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
 
-                if event.type == ADDFISH:
+                if event.type == ADDFISH: # spawn fish event
                     self.spawnFish()
 
-                if event.type == GAMEFINISH:
-                    print("efse")
-                    running = False
+                if event.type == GAMEFINISH: # game ends event
+                    print("out of time")
+                    self.running = False
 
 
             pressedKeys = pg.key.get_pressed()
@@ -81,12 +81,15 @@ class Game:
                 # fish-player collision, if player bigger eat fish
                 if self.player.getSize() >= fish.getSize():
                     self.player.addSize(fish.getSize())
-                    self.player.addScore(1)
+                    self.player.addScore(fish.getScore())
                     fish.kill()
                 # fish-player collision, if fish bigger "eat" player
                 else:
                     self.player.addScore(-5) # player "eaten" here
-                    fish.kill() # probs remove this
+
+                # kill fish if swim off screen
+                if fish.rect.right < 0:
+                    fish.kill()
             
             for fish in self.fishList:
                 # fish-fish collisions
@@ -102,7 +105,13 @@ class Game:
                             otherFish.kill()
 
             if self.time > self.runTime:
-                print("AFJNJ")
+                pg.event.post(GAMEFINISH)
+
+            # text stuff
+            self.UISprites = []
+            timeText = (self.gameFont.render(f"{round(self.time)}", True, (255, 255, 255)),
+                        (20, 20))
+            self.UISprites.append(timeText)
 
             screen.fill("blue")
 
@@ -110,15 +119,15 @@ class Game:
             for entity in self.gameSprites:
                 screen.blit(entity.surf, entity.rect) # can change if needed
 
+            for text in self.UISprites:
+                screen.blit(text[0], text[1])
+
             pg.display.flip()
             clock.tick(60)
+            # update time
             self.time += clock.get_time() / 1000
 
         pg.quit()
-
-
-myGame = Game()
-myGame.run()
 
 
 myGame = Game()
