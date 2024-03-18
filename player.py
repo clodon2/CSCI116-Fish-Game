@@ -20,6 +20,10 @@ class Player(pg.sprite.Sprite):
   def addScore(self, amount):
     self.score += amount
 
+  def addSize(self, amount):
+    self.size += amount
+    self.rect.inflate_ip(amount, amount)
+
   def update(self, pressedKeys):
     if keypress[K_UP]:
         self.rect.move_ip(-self.speed, 0)
