@@ -6,12 +6,11 @@ SCREEN_WIDTH = 1000
 class Player(pg.sprite.Sprite):
   def __init__(self, location=(500, 300)):
         super().__init__()
-        self.speed = 10
-        self.size = 1.2
-        displaySize = (round(50 * self.size), round(50 * self.size))
+        self.speed = 5
+        self.size = 1
         self.score = 0
 
-        self.surf = pg.surface.Surface(displaySize) # replace w/ scaled image
+        self.surf = pg.image.load(game-assets/sprites/player/player1.png) # replace w/ scaled image
         self.surf.fill((0, 0, 0))
         self.rect = self.surf.get_rect(center=location)
   def getScore(self):
@@ -23,6 +22,12 @@ class Player(pg.sprite.Sprite):
   def addSize(self, amount):
     self.size += amount
     self.rect.inflate_ip(amount, amount)
+
+  def getSize(self):
+    return self.size
+
+  def getSpeed(self):
+    return self.speed
 
   def update(self, pressedKeys):
     if keypress[K_UP]:
