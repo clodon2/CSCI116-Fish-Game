@@ -20,6 +20,7 @@ class Game:
         self.runTime = runTime
 
         self.player = Player()
+        self.time = 0
 
         self.fishList = pg.sprite.Group()
         self.gameSprites = pg.sprite.Group()
@@ -52,6 +53,8 @@ class Game:
         ADDFISH = pg.USEREVENT + 1
         pg.time.set_timer(ADDFISH, 1000)
 
+        GAMEFINISH = pg.USEREVENT + 2
+
         while running:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -59,6 +62,10 @@ class Game:
 
                 if event.type == ADDFISH:
                     self.spawnFish()
+
+                if event.type == GAMEFINISH:
+                    print("efse")
+                    running = False
 
 
             pressedKeys = pg.key.get_pressed()
@@ -94,6 +101,9 @@ class Game:
                             fish.addSize(otherFish.getSize())
                             otherFish.kill()
 
+            if self.time > self.runTime:
+                print("AFJNJ")
+
             screen.fill("blue")
 
             # draw all entitites to the screen
@@ -102,8 +112,13 @@ class Game:
 
             pg.display.flip()
             clock.tick(60)
+            self.time += clock.get_time() / 1000
 
         pg.quit()
+
+
+myGame = Game()
+myGame.run()
 
 
 myGame = Game()
