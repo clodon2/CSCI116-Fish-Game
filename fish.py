@@ -53,7 +53,7 @@ class Fish(pg.sprite.Sprite):
         return self.speed
     #Gets size of fish and adds size to moving fish
     def addSize(self, amount):
-        self.size += amount
+        self.size += amount / 5
         nextSize = (self.ogSize[0] * self.size,
                     self.ogSize[1] * self.size)
         self.surf = pg.transform.scale(self.surf, nextSize)
