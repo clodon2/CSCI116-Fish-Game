@@ -8,7 +8,6 @@ Description: Main game loop class for the game, combines all parts
 import pygame as pg
 import random as rd
 from player import Player
-from gui import GUI
 from fish import Fish
 from leaderboard import Leaderboard
 
