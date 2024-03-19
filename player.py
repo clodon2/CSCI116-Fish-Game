@@ -31,20 +31,22 @@ class Player(pg.sprite.Sprite):
 
 # Create the player sprite and set parameters
   
-  def __init__(self, location=(0, 300)):
+  def __init__(self, location=(50, 300)):
         super().__init__()
         self.speed = 5
         self.size = 1
         self.score = 0
 
-        self.surf = pg.image.load(game-assets/sprites/player/player1.png) # replace w/ scaled image
+        self.surf = pg.image.load("game-assets/sprites/player/player1.png") # replace w/ scaled image
         self.surf = pg.transform.flip(self.surf, True, False)
         self.rect = self.surf.get_rect(center=location)
+
+        self.ogSize = self.surf.get_size()
 
   # Get the current score and add score over time
     
   def getScore(self):
-    return self.score
+    return round(self.score)
 
   def addScore(self, amount):
     self.score += amount
@@ -52,8 +54,11 @@ class Player(pg.sprite.Sprite):
   # Get the size of the fish and add size to player fish
 
   def addSize(self, amount):
-    self.size += amount
-    self.rect.inflate_ip(amount, amount)
+    self.size += amount / 5
+    nextSize = (self.ogSize[0] * self.size,
+                self.ogSize[1] * self.size)
+    self.surf = pg.transform.scale(self.surf, nextSize)
+    self.rect.update((self.rect.left, self.rect.top), nextSize)
 
   def getSize(self):
     return self.size
@@ -67,16 +72,16 @@ class Player(pg.sprite.Sprite):
 
   def update(self, pressedKeys):
     if pressedKeys[K_UP]:
-        self.rect.move_ip(-self.speed, 0)
+        self.rect.move_ip(0, -self.speed)
     if pressedKeys[K_DOWN]:
-        self.rect.move_ip(self.speed, 0)
+        self.rect.move_ip(0, self.speed)
 
     # Keep player on the screen
     
     if self.rect.left < 0:
         self.rect.left = 0
     if self.rect.right > SCREEN_WIDTH:
-        self.rect.right = SCREEN_WIDTH
+        self.rect.top = SCREEN_WIDTH
     if self.rect.top <= 0:
         self.rect.top = 0
     if self.rect.bottom >= SCREEN_HEIGHT:

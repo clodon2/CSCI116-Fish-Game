@@ -41,10 +41,10 @@ class Fish(pg.sprite.Sprite):
         randImage = rd.choice(fishList)
         #Loads image
         self.surf = pg.image.load(randImage)
-        self.surf = pg.transform.scale(self.surf, (self.size,self.size))
+        self.surf = pg.transform.scale_by(self.surf, self.size)
         self.rect = self.surf.get_rect(center=location)
-        
-        self.ogImage = self.surf.copy()
+
+        self.ogSize = self.surf.get_size()
     #Gets size of fish from self.size
     def getSize(self):
         return self.size
@@ -54,7 +54,10 @@ class Fish(pg.sprite.Sprite):
     #Gets size of fish and adds size to moving fish
     def addSize(self, amount):
         self.size += amount
-        self.rect.inflate_ip(amount, amount)
+        nextSize = (self.ogSize[0] * self.size,
+                    self.ogSize[1] * self.size)
+        self.surf = pg.transform.scale(self.surf, nextSize)
+        self.rect.update((self.rect.left, self.rect.top), nextSize)
     #Updates fish object in place  
     def update(self):
         self.rect.move_ip(-self.speed, 0)

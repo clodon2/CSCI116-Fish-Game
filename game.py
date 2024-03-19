@@ -9,7 +9,7 @@ import pygame as pg
 import random as rd
 from player import Player
 from fish import Fish
-from leaderboard import Leaderboard
+from ScoreBoard import ScoreBoard
 
 
 class Game:
@@ -51,7 +51,7 @@ class Game:
 
         # for fish spawning
         ADDFISH = pg.USEREVENT + 1
-        pg.time.set_timer(ADDFISH, 750)
+        pg.time.set_timer(ADDFISH, 1200)
 
         # for game end
         GAMEFINISH = pg.USEREVENT + 2
@@ -82,7 +82,7 @@ class Game:
                 # fish-player collision, if player bigger eat fish
                 if self.player.getSize() >= fish.getSize():
                     self.player.addSize(fish.getSize())
-                    self.player.addScore(fish.getSize())
+                    self.player.addScore(fish.getSize() * 100)
                     fish.kill()
                 # fish-player collision, if fish bigger "eat" player
                 else:
@@ -110,9 +110,15 @@ class Game:
 
             # text stuff
             self.UISprites = []
-            timeText = (self.gameFont.render(f"{round(self.time)}", True, (255, 255, 255)),
+            timeText = (self.gameFont.render(f"{round(self.time)}",
+                                             True, (255, 255, 255)),
                         (20, 20))
             self.UISprites.append(timeText)
+
+            scoreText = (self.gameFont.render(f"{self.player.getScore()}",
+                                              True, (255, 255, 255)),
+                         (20, 50))
+            self.UISprites.append(scoreText)
 
             screen.fill("blue")
 
