@@ -1,3 +1,17 @@
+"""
+Program: fish.py
+Author: Sam Cremeans
+Date-Written: 3/17/2024
+Group: Austin Amash, Corey Verkouteren, Landon Harney, Sam Cremeans
+Description: This program creates the various fish objects for a fish game via a list and creates random sizes and speeds to provide
+    a variety of fish types
+Variables Used:
+
+
+"""
+
+
+
 import pygame as pg
 import random as rd
 
